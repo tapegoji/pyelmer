@@ -29,6 +29,7 @@ class Simulation:
         self.materials = {}
         self.bodies = {}
         self.boundaries = {}
+        self.next_bndry_id = 1
         self.body_forces = {}
         self.components = {}
         self.initial_conditions = {}
@@ -36,7 +37,7 @@ class Simulation:
         self.equations = {}
         self.constants = {"Stefan Boltzmann": 5.6704e-08}
         self.settings = {}
-        self.sif_filename = "case.sif"
+        self.sif_filename = "case.sif"        
 
     def write_sif(self, simulation_dir):
         """Write sif file.
@@ -143,7 +144,7 @@ class Simulation:
             self.equations,
             self.materials,
             self.bodies,
-            self.boundaries,
+            # self.boundaries,
             self.body_forces,
             self.components,
             self.initial_conditions,
@@ -252,7 +253,8 @@ class Boundary:
             data (dict, optional): Boundary data as in sif-file.
         """
         simulation.boundaries.update({name: self})
-        self.id = 0
+        self.id = simulation.next_bndry_id
+        simulation.next_bndry_id += 1
         self.name = name
         if geo_ids is None:
             self.geo_ids = []
